@@ -1,0 +1,85 @@
+html {
+  font-family: serif;
+  background-color: #f0f5f4;
+}
+
+body {
+  text-align: left;
+}
+
+a {
+  text-decoration: none;
+  color: #005182;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.no-underline:hover {
+  text-decoration: none !important;
+}
+
+.text-bold {
+  font-weight: 600 !important;
+}
+
+.text-small {
+  font-size: 12px !important;
+}
+
+.text-color-1 {
+  color: #0d1117;
+}
+
+.margin-4px {
+  margin-right: 4px !important;
+}
+
+.margin-8px {
+  margin-right: 8px !important;
+}
+
+.list-style-none {
+  list-style: none !important;
+  padding-left: 0px;
+}
+
+.d-inline {
+  display: inline !important;
+}
+
+.float-right {
+  float: right !important;
+}
+
+.icon {
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.logo {
+  vertical-align: text-bottom;
+  height: 42px;
+}
+
+.projects {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #00ab91;
+}
+
+.projects > div {
+  background-color: #f0f5f4;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.project-entry > p {
+  min-height: 1em;
+}
+
+.project-languages > li:last-child {
+  margin-right: 0 !important;
+}

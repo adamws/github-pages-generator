@@ -1,0 +1,4 @@
+.env/
+__pycache__/
+output/
+http_cache.sqlite
