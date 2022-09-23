@@ -23,4 +23,6 @@ periodically, keeping your statistics up to date.
 
 ## Deployment
 
-[todo]
+In order to deploy on your repository add this project as git `submodule` and integrate with
+`.github/workflows`. Example can be seen [here](https://github.com/adamws/adamws.github.io).
+Easiest way to deploy automatically is to use [peaceiris/actions-gh-pages](https://github.com/peaceiris/actions-gh-pages).
