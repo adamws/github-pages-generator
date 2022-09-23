@@ -37,12 +37,12 @@ def get_avatar(user: str, output_directory: Path):
     create_favicon(avatar_path)
 
 
-def get_projects_data(user):
+def get_projects_data(user, ignore_list):
     endpoint = f"{GITHUB_API}/users/{user}/repos"
     response = session_get(endpoint)
 
     projects = response.json()
-    projects = [x for x in projects if not x["fork"]]
+    projects = [x for x in projects if not x["fork"] if x["name"] not in ignore_list]
     projects = sorted(projects, key=lambda x: int(x["stargazers_count"]), reverse=True)
 
     for i, project in enumerate(projects):
@@ -91,15 +91,25 @@ if __name__ == "__main__":
         description="Static site generator for GitHub Pages"
     )
     parser.add_argument("-u", "--username", required=True, help="GitHub username")
+    parser.add_argument(
+        "--ignore", type=str, help="Comma separated list or repositories to ignore"
+    )
 
     args = parser.parse_args()
 
     user = args.username
+    ignore = args.ignore
+    if ignore:
+        ignore = [s.strip() for s in ignore.split(",")]
+    else:
+        # nothing to ignore
+        ignore = []
+
     output_directory = Path("output")
 
     shutil.rmtree(output_directory, ignore_errors=True)
     os.mkdir(output_directory)
 
     get_avatar(user, output_directory)
-    projects = get_projects_data(user)
+    projects = get_projects_data(user, ignore)
     render(projects, output_directory)
