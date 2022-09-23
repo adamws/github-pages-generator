@@ -1,3 +1,4 @@
+import argparse
 import os
 import shutil
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -86,7 +87,14 @@ def render(projects, output_directory: Path):
 
 
 if __name__ == "__main__":
-    user = "adamws"
+    parser = argparse.ArgumentParser(
+        description="Static site generator for GitHub Pages"
+    )
+    parser.add_argument("-u", "--username", required=True, help="GitHub username")
+
+    args = parser.parse_args()
+
+    user = args.username
     output_directory = Path("output")
 
     shutil.rmtree(output_directory, ignore_errors=True)
