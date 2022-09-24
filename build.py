@@ -34,6 +34,9 @@ def get_avatar(user: str, output_directory: Path):
     avatar_path = output_directory / "avatar.png"
     with open(avatar_path, "wb") as f:
         f.write(response.content)
+    img = Image.open(avatar_path)
+    img = img.resize((84, 84))
+    img.save(avatar_path)
     create_favicon(avatar_path)
 
 
