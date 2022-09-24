@@ -83,3 +83,14 @@ a:hover {
 .project-languages > li:last-child {
   margin-right: 0 !important;
 }
+
+@media (max-width: 800px) {
+  .projects {
+    flex-flow: column nowrap;
+  }
+
+  .project-languages {
+    display: inline-flex;
+    flex-wrap: wrap;
+  }
+}
