@@ -28,7 +28,7 @@
   <body>
     <main>
       <div class="projects-header">
-        <a class="no-underline" href="{{ projects[0].owner.html_url }}">
+        <a class="no-underline" href="{{ projects[0].owner.html_url }}" aria-label="Go to GitHub profile page">
           <h1><img class="logo" src="./avatar.png" alt=""></img> Projects</h1>
         </a>
       </div>
@@ -36,7 +36,7 @@
         {% for item in projects %}
         <div class="project-entry">
           <p class="project-name">
-            <a class="text-bold" href="{{ item.html_url }}">
+            <a class="text-bold" href="{{ item.html_url }}" aria-label="Go to {{ item.name }} repository">
               {{ octicon_repo() }}
               {{ item.name }}
             </a>
@@ -60,11 +60,11 @@
             {% endfor %}
           </ul>
           <p class="project-stats text-small">
-            <a class="no-underline margin-4px" href="{{ item.html_url }}/stargazers">
+            <a class="no-underline margin-4px" href="{{ item.html_url }}/stargazers" aria-label="Go to {{ item.name }}'s stargazers">
               {{ octicon_star() }}
               {{ item.stargazers_count }}
             </a>
-            <a class="no-underline" href="{{ item.html_url }}/network/members">
+            <a class="no-underline" href="{{ item.html_url }}/network/members", aria-label="Go to {{ item.name }}'s network members">
               {{ octicon_repo_forked() }}
               {{ item.forks_count }}
             </a>
