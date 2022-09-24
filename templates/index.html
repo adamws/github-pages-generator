@@ -42,12 +42,12 @@
             </a>
           </p>
           <p class="project-description">
-            {% if item.description is string %}
+            {% if item.description is not none and item.description is not sameas "" %}
               {{ item.description }}
             {% endif %}
           </p>
           <p class="project-homepage">
-            {% if item.homepage is string %}
+            {% if item.homepage is not none and item.homepage is not sameas "" %}
               <a href="{{ item.homepage }}">{{ item.homepage }}</a>
             {% endif %}
           </p>
