@@ -1,4 +1,5 @@
 import argparse
+import json
 import os
 import shutil
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -74,7 +75,7 @@ def get_projects_data(user, ignore_list):
     return projects
 
 
-def render(projects, output_directory: Path):
+def render(projects, colors, output_directory: Path):
     env = Environment(
         loader=FileSystemLoader("templates"), autoescape=select_autoescape()
     )
@@ -86,7 +87,7 @@ def render(projects, output_directory: Path):
             f.write(line.strip())
 
     template = env.get_template("style.css")
-    template.stream().dump(str(output_directory / "style.css"))
+    template.stream(colors=colors).dump(str(output_directory / "style.css"))
 
 
 if __name__ == "__main__":
@@ -94,6 +95,14 @@ if __name__ == "__main__":
         description="Static site generator for GitHub Pages"
     )
     parser.add_argument("-u", "--username", required=True, help="GitHub username")
+    parser.add_argument(
+        "--colorscheme",
+        type=str,
+        default=(
+            os.path.abspath(os.path.dirname(__file__)) + "/colorschemes/default.json"
+        ),
+        help="Colorscheme file path",
+    )
     parser.add_argument(
         "--ignore", type=str, help="Comma separated list or repositories to ignore"
     )
@@ -108,6 +117,9 @@ if __name__ == "__main__":
         # nothing to ignore
         ignore = []
 
+    with open(args.colorscheme, "r") as f:
+        colors = json.loads(f.read())
+
     output_directory = Path("output")
 
     shutil.rmtree(output_directory, ignore_errors=True)
@@ -115,4 +127,4 @@ if __name__ == "__main__":
 
     get_avatar(user, output_directory)
     projects = get_projects_data(user, ignore)
-    render(projects, output_directory)
+    render(projects, colors, output_directory)

@@ -1,6 +1,14 @@
+:root {
+  --color-background: #{{ colors["background"] }};
+  --color-projects-background: #{{ colors["projects-background"] }};
+  --color-project-card: #{{ colors["project-card"] }};
+  --color-text: #{{ colors["text"] }};
+  --color-text-link: #{{ colors["text-link"] }};
+}
+
 html {
   font-family: serif;
-  background-color: #f0f5f4;
+  background-color: var(--color-background);
 }
 
 body {
@@ -9,7 +17,7 @@ body {
 
 a {
   text-decoration: none;
-  color: #005182;
+  color: var(--color-text-link);
 }
 
 a:hover {
@@ -29,7 +37,7 @@ a:hover {
 }
 
 .text-color-1 {
-  color: #0d1117;
+  color: var(--color-text);
 }
 
 .margin-4px {
@@ -65,11 +73,11 @@ a:hover {
 .projects {
   display: flex;
   flex-wrap: wrap;
-  background-color: #00ab91;
+  background-color: var(--color-projects-background);
 }
 
 .projects > div {
-  background-color: #f0f5f4;
+  background-color: var(--color-project-card);
   margin: 10px;
   padding: 20px;
   border-radius: 10px;
