@@ -7,13 +7,19 @@ from pathlib import Path
 from PIL import Image
 from requests_cache import CachedSession
 
+user = os.environ.get("GITHUB_USER", None)
+token = os.environ.get("PERSONAL_ACCESS_TOKEN", None)
 
 GITHUB_API = "https://api.github.com"
 session = CachedSession()
 
 
 def session_get(endpoint: str):
-    response = session.get(endpoint)
+    if user and token:
+        response = session.get(endpoint, auth=(user, token))
+    else:
+        response = session.get(endpoint)
+
     if response.status_code != 200:
         print(f"Request {endpoint} failed, aborting")
         exit()

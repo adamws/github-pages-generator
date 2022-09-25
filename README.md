@@ -21,6 +21,15 @@ manually committed to `gh-pages` branch or your [GitHub Pages](https://docs.gith
 but it is recommended to set up automatic deployment with [GitHub Actions](https://github.com/features/actions) which will trigger
 periodically, keeping your statistics up to date.
 
+### Rate limits
+
+GitHub's REST API has [rate limits](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting)
+which can be easily reached while experimenting with this tool. There are two mechanisms built-in
+to circumvent that:
+
+- requests are cached with [`requests-cache`](https://requests-cache.readthedocs.io/en/stable/index.html)
+- requests can be optionally authenticated with [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) via `GITHUB_USER` and `PERSONAL_ACCESS_TOKEN` environment variables.
+
 ## Deployment
 
 In order to deploy on your repository add this project as git `submodule` and integrate with
