@@ -1,6 +1,10 @@
 # GitHub pages generator
 
-Generate and deploy minimalistic [website](https://adamws.github.io/) with your repositories statistics with GitHub Actions.
+Generate and deploy minimalistic website with your repositories statistics with GitHub Actions.
+
+Examples:
+- [GitHub's projects](https://adamws.github.io/github-pages-generator/) (default theme, trigger on [`master` push](https://github.com/adamws/github-pages-generator/blob/master/.github/workflows/deploy-website.yml))
+- [my projects](https://adamws.github.io/) (customized theme, trigger [on schedule](https://github.com/adamws/adamws.github.io/blob/master/.github/workflows/deploy-website.yml))
 
 ## Local usage
 
