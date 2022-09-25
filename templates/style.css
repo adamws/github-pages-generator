@@ -87,6 +87,11 @@ a:hover {
   min-height: 1em;
 }
 
+.project-languages {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
 .project-languages > li:last-child {
   margin-right: 0 !important;
 }
@@ -94,10 +99,5 @@ a:hover {
 @media (max-width: 800px) {
   .projects {
     flex-flow: column nowrap;
-  }
-
-  .project-languages {
-    display: inline-flex;
-    flex-wrap: wrap;
   }
 }
