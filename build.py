@@ -48,10 +48,18 @@ def get_avatar(user: str, output_directory: Path):
 
 
 def get_projects_data(user, ignore_list):
-    endpoint = f"{GITHUB_API}/users/{user}/repos"
-    response = session_get(endpoint)
+    projects = []
+    page = 1
 
-    projects = response.json()
+    while True:
+        endpoint = f"{GITHUB_API}/users/{user}/repos?page={page}"
+        response = session_get(endpoint).json()
+        if response:
+            projects.extend(response)
+            page += 1
+        else:
+            break
+
     projects = [x for x in projects if not x["fork"] if x["name"] not in ignore_list]
     projects = sorted(projects, key=lambda x: int(x["stargazers_count"]), reverse=True)
 
