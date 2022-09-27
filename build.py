@@ -47,7 +47,7 @@ def get_avatar(user: str, output_directory: Path):
     create_favicon(avatar_path)
 
 
-def get_projects_data(user, ignore_list):
+def get_projects_data(user):
     projects = []
     page = 1
 
@@ -60,13 +60,22 @@ def get_projects_data(user, ignore_list):
         else:
             break
 
-    projects = [x for x in projects if not x["fork"] if x["name"] not in ignore_list]
-    projects = sorted(projects, key=lambda x: int(x["stargazers_count"]), reverse=True)
-
     for i, project in enumerate(projects):
         # get languages statistcs
         response = session_get(project["languages_url"])
         languages = response.json()
+        project["languages"] = languages
+        projects[i] = project
+
+    return projects
+
+
+def process_projects_data(projects, ignore_list):
+    projects = [x for x in projects if not x["fork"] if x["name"] not in ignore_list]
+    projects = sorted(projects, key=lambda x: int(x["stargazers_count"]), reverse=True)
+
+    for i, project in enumerate(projects):
+        languages = project["languages"]
         sum_of_bytes = sum(languages.values())
         for language, bytes_of_code in languages.items():
             percentage = round(bytes_of_code / sum_of_bytes * 100, 1)
@@ -150,5 +159,6 @@ if __name__ == "__main__":
 
     if header:
         get_avatar(user, output_directory)
-    projects = get_projects_data(user, ignore)
+    projects = get_projects_data(user)
+    projects = process_projects_data(projects, ignore)
     render(projects, colors, header, footer, output_directory)
