@@ -89,12 +89,12 @@ def get_projects_data(user, ignore_list):
     return projects
 
 
-def render(projects, colors, footer, output_directory: Path):
+def render(projects, colors, header, footer, output_directory: Path):
     env = Environment(
         loader=FileSystemLoader("templates"), autoescape=select_autoescape()
     )
     template = env.get_template("index.html")
-    page = template.render(projects=projects, footer=footer)
+    page = template.render(projects=projects, header=header, footer=footer)
 
     with open(str(output_directory / "index.html"), "w") as f:
         for line in page.splitlines():
@@ -121,6 +121,9 @@ if __name__ == "__main__":
         "--ignore", type=str, help="Comma separated list or repositories to ignore"
     )
     parser.add_argument(
+        "--skip-header", action="store_true", help="Turns off header"
+    )
+    parser.add_argument(
         "--skip-footer", action="store_true", help="Turns off footer"
     )
 
@@ -137,6 +140,7 @@ if __name__ == "__main__":
     with open(args.colorscheme, "r") as f:
         colors = json.loads(f.read())
 
+    header = not args.skip_header
     footer = not args.skip_footer
 
     output_directory = Path("output")
@@ -144,6 +148,7 @@ if __name__ == "__main__":
     shutil.rmtree(output_directory, ignore_errors=True)
     os.mkdir(output_directory)
 
-    get_avatar(user, output_directory)
+    if header:
+        get_avatar(user, output_directory)
     projects = get_projects_data(user, ignore)
-    render(projects, colors, footer, output_directory)
+    render(projects, colors, header, footer, output_directory)
