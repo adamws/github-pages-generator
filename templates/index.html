@@ -65,7 +65,7 @@
               {{ octicon_star() }}
               {{ item.stargazers_count }}
             </a>
-            <a class="no-underline margin-8px" href="{{ item.html_url }}/network/members", aria-label="Go to {{ item.name }}'s network members">
+            <a class="no-underline margin-8px" href="{{ item.html_url }}/network/members" aria-label="Go to {{ item.name }}'s network members">
               {{ octicon_repo_forked() }}
               {{ item.forks_count }}
             </a>
@@ -79,4 +79,5 @@
       </div>
     </main>
   </body>
+  {% include 'footer.html' %}
 </html>
