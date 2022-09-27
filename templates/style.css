@@ -13,6 +13,9 @@ html {
 
 body {
   text-align: left;
+  border: 0;
+  margin: 0;
+  padding: 0;
 }
 
 a {
@@ -66,6 +69,10 @@ a:hover {
   fill: currentColor;
 }
 
+.projects-header {
+  margin: 15px;
+}
+
 .logo {
   vertical-align: text-bottom;
 }
@@ -74,6 +81,7 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   background-color: var(--color-projects-background);
+  padding: 5px;
 }
 
 .projects > div {
