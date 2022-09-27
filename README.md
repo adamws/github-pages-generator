@@ -2,9 +2,17 @@
 
 Generate and deploy minimalistic website with your repositories statistics with GitHub Actions.
 
-Examples:
+**Key features:**
+
+- lightweight, html and css only
+- responsive, mobile friendly
+- customizable and extensible
+
+**Examples:**
 - [GitHub's projects](https://adamws.github.io/github-pages-generator/) (default theme, trigger on [`master` push](https://github.com/adamws/github-pages-generator/blob/master/.github/workflows/deploy-website.yml))
 - [my projects](https://adamws.github.io/) (customized theme, trigger [on schedule](https://github.com/adamws/adamws.github.io/blob/master/.github/workflows/deploy-website.yml))
+
+![assets/screenshot.png](assets/screenshot.png)
 
 ## Local usage
 
