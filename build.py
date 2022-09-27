@@ -90,8 +90,8 @@ def process_projects_data(projects, ignore_list):
         project["languages"] = languages_filtered
 
         # simplify time
-        time = project["updated_at"]
-        project["updated_at"] = time[0 : time.find("T")]
+        time = project["pushed_at"]
+        project["pushed_at"] = time[0 : time.find("T")]
 
         projects[i] = project
 
