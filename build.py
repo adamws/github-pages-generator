@@ -2,6 +2,7 @@ import argparse
 import json
 import os
 import shutil
+import sys
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from pathlib import Path
 from PIL import Image
@@ -21,8 +22,7 @@ def session_get(endpoint: str):
         response = session.get(endpoint)
 
     if response.status_code != 200:
-        print(f"Request {endpoint} failed, aborting")
-        exit()
+        sys.exit(f"Request {endpoint} failed, aborting")
     return response
 
 
