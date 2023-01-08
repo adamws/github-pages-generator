@@ -22,6 +22,7 @@ def session_get(endpoint: str):
         response = session.get(endpoint)
 
     if response.status_code != 200:
+        print(f"Status code: {response.status_code}, Reason: {response.reason}")
         sys.exit(f"Request {endpoint} failed, aborting")
     return response
 
