@@ -10,6 +10,7 @@ from requests_cache import CachedSession
 
 user = os.environ.get("GITHUB_USER", None)
 token = os.environ.get("PERSONAL_ACCESS_TOKEN", None)
+github_token = os.environ.get("GITHUB_TOKEN", None)
 
 GITHUB_API = "https://api.github.com"
 session = CachedSession()
@@ -18,6 +19,9 @@ session = CachedSession()
 def session_get(endpoint: str):
     if user and token:
         response = session.get(endpoint, auth=(user, token))
+    elif github_token:
+        headers = {"authorization": f"Bearer {github_token}"}
+        response = session.get(endpoint, headers=headers)
     else:
         response = session.get(endpoint)
 
