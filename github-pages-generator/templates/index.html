@@ -27,7 +27,6 @@
   {% include 'head.html' %}
   <body>
     <main>
-      {% include 'customization.html' ignore missing %}
       {% if header is sameas true %}
         <div class="projects-header">
           <a class="no-underline" href="{{ projects[0].owner.html_url }}" aria-label="Go to GitHub profile page">

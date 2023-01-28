@@ -12,6 +12,10 @@ user = os.environ.get("GITHUB_USER", None)
 token = os.environ.get("PERSONAL_ACCESS_TOKEN", None)
 github_token = os.environ.get("GITHUB_TOKEN", None)
 
+default_colorscheme = (
+    os.path.abspath(os.path.dirname(__file__)) + "/colorschemes/default.json"
+)
+
 GITHUB_API = "https://api.github.com"
 session = CachedSession()
 
@@ -105,7 +109,10 @@ def process_projects_data(projects, ignore_list):
 
 def render(projects, colors, header, footer, output_directory: Path):
     env = Environment(
-        loader=FileSystemLoader("templates"), autoescape=select_autoescape()
+        loader=FileSystemLoader(
+            os.path.abspath(os.path.dirname(__file__)) + "/templates"
+        ),
+        autoescape=select_autoescape(),
     )
     template = env.get_template("index.html")
     page = template.render(projects=projects, header=header, footer=footer)
@@ -118,7 +125,45 @@ def render(projects, colors, header, footer, output_directory: Path):
     template.stream(colors=colors).dump(str(output_directory / "style.css"))
 
 
-if __name__ == "__main__":
+def parse_action_arguments():
+    global github_token
+    github_token = os.environ.get("INPUT_GITHUB_TOKEN", None)
+
+    username = os.environ.get("INPUT_USERNAME", None)
+    colorscheme = default_colorscheme
+    colorscheme_values = os.environ.get("INPUT_COLORSCHEME", None)
+    if colorscheme_values:
+        keys = [
+            "background",
+            "projects-background",
+            "project-card",
+            "text",
+            "text-link",
+        ]
+        colors = [s.strip() for s in colorscheme_values.split(",")]
+        if len(colors) != len(keys):
+            raise ValueError("Illegal colorscheme")
+        colors = dict(zip(keys, colors))
+        with open("/tmp/colorscheme.json", "w") as fp:
+            json.dump(colors, fp)
+        colorscheme = "/tmp/colorscheme.json"
+
+    output = os.environ.get("INPUT_OUTPUT_DIR", "./output")
+    ignore = os.environ.get("INPUT_IGNORE_REPOSITORIES", None)
+    skip_header = os.environ.get("INPUT_SKIP_HEADER", False)
+    skip_footer = os.environ.get("INPUT_SKIP_FOOTER", False)
+
+    return argparse.Namespace(
+        username=username,
+        colorscheme=colorscheme,
+        output=output,
+        ignore=ignore,
+        skip_header=skip_header,
+        skip_footer=skip_footer,
+    )
+
+
+def parse_cli():
     parser = argparse.ArgumentParser(
         description="Static site generator for GitHub Pages"
     )
@@ -126,22 +171,25 @@ if __name__ == "__main__":
     parser.add_argument(
         "--colorscheme",
         type=str,
-        default=(
-            os.path.abspath(os.path.dirname(__file__)) + "/colorschemes/default.json"
-        ),
+        default=default_colorscheme,
         help="Colorscheme file path",
     )
     parser.add_argument(
-        "--ignore", type=str, help="Comma separated list or repositories to ignore"
+        "--output", type=Path, default="./output", help="Output directory"
     )
     parser.add_argument(
-        "--skip-header", action="store_true", help="Turns off header"
+        "--ignore", type=str, help="Comma separated list of repositories to ignore"
     )
-    parser.add_argument(
-        "--skip-footer", action="store_true", help="Turns off footer"
-    )
+    parser.add_argument("--skip-header", action="store_true", help="Turns off header")
+    parser.add_argument("--skip-footer", action="store_true", help="Turns off footer")
+    return parser.parse_args()
 
-    args = parser.parse_args()
+
+if __name__ == "__main__":
+    if os.environ.get("GITHUB_ACTIONS", None):
+        args = parse_action_arguments()
+    else:
+        args = parse_cli()
 
     user = args.username
     ignore = args.ignore
@@ -157,13 +205,17 @@ if __name__ == "__main__":
     header = not args.skip_header
     footer = not args.skip_footer
 
-    output_directory = Path("output")
+    output_directory = Path(args.output)
 
     shutil.rmtree(output_directory, ignore_errors=True)
-    os.mkdir(output_directory)
+    os.makedirs(output_directory, exist_ok=True)
 
     if header:
         get_avatar(user, output_directory)
     projects = get_projects_data(user)
     projects = process_projects_data(projects, ignore)
     render(projects, colors, header, footer, output_directory)
+
+    # fix output permission if running as root inside dockerized GitHub action
+    if os.environ.get("GITHUB_ACTIONS", None):
+        shutil.chown(output_directory, user=1001, group=1001)

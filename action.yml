@@ -1,0 +1,29 @@
+name: 'GitHub Pages Generator'
+description: 'Generate website with summary of user repositories'
+inputs:
+  username:
+    description: 'Set target GitHub username'
+    required: true
+  github_token:
+    description: 'Set a generated GITHUB_TOKEN for increased API rate limit.'
+    required: false
+  colorscheme:
+    description: 'Comma separated list of colors'
+    required: false
+  output_dir:
+    description: 'Output directory path'
+    required: false
+  ignore_repositories:
+    description: 'Comma separated list of repositories to ignore'
+    required: false
+  skip_header:
+    description: 'Skip website header generation'
+    required: false
+    defautl: 'false'
+  skip_footer:
+    description: 'Skip website footer generation'
+    required: false
+    defautl: 'false'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

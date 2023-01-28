@@ -1,0 +1,30 @@
+on: [push]
+
+jobs:
+  build:
+    name: Build and deploy examples
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build example1
+      uses: adamws/github-pages-generator@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        username: 'actions'
+        output_dir: ./output/example1
+    - name: Build example2
+      uses: adamws/github-pages-generator@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        username: ${{ github.actor }}
+        output_dir: ./output/example2
+        colorscheme: f0f5f4,00ab91,f0f5f4,0d1117,005182
+        ignore_repositories: adamws.github.io,ci-sandbox
+        skip_footer: true
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      if: ${{ github.ref == 'refs/heads/master' }}
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: ./output
+        force_orphan: true

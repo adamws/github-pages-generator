@@ -23,7 +23,7 @@ git clone https://github.com/adamws/github-pages-generator.git && cd github-page
 python -m venv .env
 source .env/bin/activate
 pip install -r requirements.txt
-python build.py --username <<github username>>
+python github-pages-generator/build.py --username <<github username>>
 cd output
 python -m http.server
 ```
