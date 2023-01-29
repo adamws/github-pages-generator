@@ -1,5 +1,8 @@
 name: 'GitHub Pages Generator'
 description: 'Generate website with summary of user repositories'
+branding:
+  icon: 'home'
+  color: 'blue'
 inputs:
   username:
     description: 'Set target GitHub username'
