@@ -8,11 +8,43 @@ Generate and deploy minimalistic website with your repositories statistics with 
 - responsive, mobile friendly
 - customizable and extensible
 
-**Examples:**
-- [GitHub's projects](https://adamws.github.io/github-pages-generator/) (default theme, trigger on [`master` push](https://github.com/adamws/github-pages-generator/blob/master/.github/workflows/deploy-website.yml))
-- [my projects](https://adamws.github.io/) (customized theme, trigger [on schedule](https://github.com/adamws/adamws.github.io/blob/master/.github/workflows/deploy-website.yml))
+## Example workflow
 
-![assets/screenshot.png](assets/screenshot.png)
+- To run and deploy at 12:00pm every day:
+
+  ```yaml
+  name: Build and deploy website
+
+  on:
+    push:
+      branches:
+        - master
+    schedule:
+      - cron: "0 12 * * *"
+
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Build
+        uses: adamws/github-pages-generator@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ github.actor }}
+          output_dir: ./output
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./output
+  ```
+
+- Other examples:
+  - [action's projects](https://adamws.github.io/github-pages-generator/example1) (default theme, trigger on [`master` push](https://github.com/adamws/github-pages-generator/blob/master/.github/workflows/main.yml))
+  - [my projects](https://adamws.github.io/) (customized theme, trigger [on schedule](https://github.com/adamws/adamws.github.io/blob/master/.github/workflows/deploy-website.yml))
+
+  ![assets/screenshot.png](assets/screenshot.png)
 
 ## Local usage
 
@@ -42,8 +74,3 @@ to circumvent that:
 - requests are cached with [`requests-cache`](https://requests-cache.readthedocs.io/en/stable/index.html)
 - requests can be optionally authenticated with [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) via `GITHUB_USER` and `PERSONAL_ACCESS_TOKEN` environment variables.
 
-## Deployment
-
-In order to deploy on your repository add this project as git `submodule` and integrate with
-`.github/workflows`. Example can be seen [here](https://github.com/adamws/adamws.github.io).
-Easiest way to deploy automatically is to use [peaceiris/actions-gh-pages](https://github.com/peaceiris/actions-gh-pages).
