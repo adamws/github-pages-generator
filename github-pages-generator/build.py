@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import requests
 import shutil
 import sys
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -17,7 +18,12 @@ default_colorscheme = (
 )
 
 GITHUB_API = "https://api.github.com"
-session = CachedSession()
+
+# there is something wrong with request cache when running in container
+if os.environ.get("GITHUB_ACTIONS", None):
+    session = requests.Session()
+else:
+    session = CachedSession()
 
 
 def session_get(endpoint: str):
