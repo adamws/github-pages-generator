@@ -27,6 +27,10 @@ inputs:
     description: 'Skip website footer generation'
     required: false
     defautl: 'false'
+  data_only:
+    description: 'Run in data mode, will output json file instead of html'
+    required: false
+    defautl: 'false'
 runs:
   using: 'docker'
   image: 'Dockerfile'

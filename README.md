@@ -40,6 +40,22 @@ Generate and deploy minimalistic website with your repositories statistics with 
           publish_dir: ./output
   ```
 
+- To run in `data-only` mode for creating `repositories.json` file at `output_dir` path,
+  which can be used for integration with other tools:
+
+  ```yaml
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Get data
+        uses: adamws/github-pages-generator@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ github.actor }}
+          data_only: true
+  ```
+
 - Other examples:
   - [action's projects](https://adamws.github.io/github-pages-generator/example1) (default theme, trigger on [`master` push](https://github.com/adamws/github-pages-generator/blob/master/.github/workflows/main.yml))
   - [my projects](https://adamws.github.io/) (customized theme, trigger [on schedule](https://github.com/adamws/adamws.github.io/blob/master/.github/workflows/deploy-website.yml))

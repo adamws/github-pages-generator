@@ -1,7 +1,7 @@
 on: [push]
 
 jobs:
-  build:
+  build-examples:
     name: Build and deploy examples
     runs-on: ubuntu-latest
     steps:
@@ -28,3 +28,19 @@ jobs:
         publish_branch: gh-pages
         publish_dir: ./output
         force_orphan: true
+  run-data-only-mode:
+    name: Get user repositories data
+    runs-on: ubuntu-latest
+    steps:
+    - uses: adamws/github-pages-generator@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        username: ${{ github.actor }}
+        ignore_repositories: adamws.github.io,ci-sandbox
+        output_dir: ./output
+        data_only: true
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v3
+      with:
+        path: ./output/*.json
+        retention-days: 5

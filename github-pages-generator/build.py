@@ -108,6 +108,26 @@ def process_projects_data(projects, ignore_list):
         time = project["pushed_at"]
         project["pushed_at"] = time[0 : time.find("T")]
 
+        # get only name and url from owner object
+        project["owner_name"] = project["owner"]["login"]
+        project["owner_url"] = project["owner"]["html_url"]
+
+        # remove unused keys
+        for key in list(project.keys()):
+            if key not in [
+                "description",
+                "forks_count",
+                "homepage",
+                "html_url",
+                "languages",
+                "name",
+                "owner_name",
+                "owner_url",
+                "pushed_at",
+                "stargazers_count",
+            ]:
+                del project[key]
+
         projects[i] = project
 
     return projects
@@ -158,6 +178,7 @@ def parse_action_arguments():
     ignore = os.environ.get("INPUT_IGNORE_REPOSITORIES", None)
     skip_header = os.environ.get("INPUT_SKIP_HEADER", False)
     skip_footer = os.environ.get("INPUT_SKIP_FOOTER", False)
+    data_only = os.environ.get("INPUT_DATA_ONLY", False)
 
     return argparse.Namespace(
         username=username,
@@ -166,6 +187,7 @@ def parse_action_arguments():
         ignore=ignore,
         skip_header=skip_header,
         skip_footer=skip_footer,
+        data_only=data_only,
     )
 
 
@@ -188,6 +210,11 @@ def parse_cli():
     )
     parser.add_argument("--skip-header", action="store_true", help="Turns off header")
     parser.add_argument("--skip-footer", action="store_true", help="Turns off footer")
+    parser.add_argument(
+        "--data-only",
+        action="store_true",
+        help="Run in data mode, will output json file instead of html",
+    )
     return parser.parse_args()
 
 
@@ -205,22 +232,28 @@ if __name__ == "__main__":
         # nothing to ignore
         ignore = []
 
-    with open(args.colorscheme, "r") as f:
-        colors = json.loads(f.read())
-
     header = not args.skip_header
     footer = not args.skip_footer
+    data_only = args.data_only
 
     output_directory = Path(args.output)
 
     shutil.rmtree(output_directory, ignore_errors=True)
     os.makedirs(output_directory, exist_ok=True)
 
-    if header:
+    if header and not data_only:
         get_avatar(user, output_directory)
+
     projects = get_projects_data(user)
     projects = process_projects_data(projects, ignore)
-    render(projects, colors, header, footer, output_directory)
+
+    if data_only:
+        with open(output_directory / "repositories.json", "w") as f:
+            json.dump(projects, f)
+    else:
+        with open(args.colorscheme, "r") as f:
+            colors = json.loads(f.read())
+        render(projects, colors, header, footer, output_directory)
 
     # fix output permission if running as root inside dockerized GitHub action
     if os.environ.get("GITHUB_ACTIONS", None):
