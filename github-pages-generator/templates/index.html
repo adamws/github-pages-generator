@@ -54,10 +54,12 @@
             {% endif %}
           </p>
           <ul class="project-languages text-small list-style-none">
-            {% for language, percentage in item.languages.items() %}
+            {% for item in item.languages %}
               <li class="d-inline margin-8px">
-                <span class="text-bold text-color-1 margin-4px">{{ language }}</span>
-                <span>{{ percentage }}%</span>
+                {% for language, percentage in item.items() %}
+                  <span class="text-bold text-color-1 margin-4px">{{ language }}</span>
+                  <span>{{ percentage }}%</span>
+                {% endfor %}
               </li>
             {% endfor %}
           </ul>

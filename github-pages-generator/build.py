@@ -97,10 +97,13 @@ def process_projects_data(projects, ignore_list):
             languages[language] = f"{percentage:g}"
         if not languages:
             languages = {"Other": "100"}
-        languages_filtered = {}
-        for language, percentage in languages.items():
+        languages_sorted = {
+            k: v for k, v in sorted(languages.items(), key=lambda item: item[1])
+        }
+        languages_filtered = []
+        for language, percentage in reversed(languages_sorted.items()):
             if percentage != "0":
-                languages_filtered[language] = percentage
+                languages_filtered.append({language: percentage})
 
         project["languages"] = languages_filtered
 
