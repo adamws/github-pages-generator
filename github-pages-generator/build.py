@@ -98,7 +98,7 @@ def process_projects_data(projects, ignore_list):
         if not languages:
             languages = {"Other": "100"}
         languages_sorted = {
-            k: v for k, v in sorted(languages.items(), key=lambda item: item[1])
+            k: v for k, v in sorted(languages.items(), key=lambda item: float(item[1]))
         }
         languages_filtered = []
         for language, percentage in reversed(languages_sorted.items()):
