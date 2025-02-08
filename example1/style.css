@@ -1,0 +1,115 @@
+:root {
+  --color-background: #ffffff;
+  --color-projects-background: #ffffff;
+  --color-project-card: #f6f8fa;
+  --color-text: #24292f;
+  --color-text-link: #0550ae;
+}
+
+html {
+  font-family: serif;
+  background-color: var(--color-background);
+}
+
+body {
+  text-align: left;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+footer {
+  margin: 15px;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-text-link);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.no-underline:hover {
+  text-decoration: none !important;
+}
+
+.text-bold {
+  font-weight: 600 !important;
+}
+
+.text-small {
+  font-size: 12px !important;
+}
+
+.text-color-1 {
+  color: var(--color-text);
+}
+
+.margin-4px {
+  margin-right: 4px !important;
+}
+
+.margin-8px {
+  margin-right: 8px !important;
+}
+
+.list-style-none {
+  list-style: none !important;
+  padding-left: 0px;
+}
+
+.d-inline {
+  display: inline !important;
+}
+
+.float-right {
+  float: right !important;
+}
+
+.icon {
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.projects-header {
+  margin: 15px;
+}
+
+.logo {
+  vertical-align: text-bottom;
+}
+
+.projects {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: var(--color-projects-background);
+  padding: 5px;
+}
+
+.projects > div {
+  background-color: var(--color-project-card);
+  margin: 10px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.project-entry > p {
+  min-height: 1em;
+}
+
+.project-languages {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.project-languages > li:last-child {
+  margin-right: 0 !important;
+}
+
+@media (max-width: 800px) {
+  .projects {
+    flex-flow: column nowrap;
+  }
+}
