@@ -21,7 +21,7 @@ jobs:
         ignore_repositories: adamws.github.io,ci-sandbox
         skip_footer: true
     - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4
       if: ${{ github.ref == 'refs/heads/master' }}
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -40,7 +40,7 @@ jobs:
         output_dir: ./output
         data_only: true
     - name: 'Upload Artifact'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         path: ./output/*.json
         retention-days: 5
